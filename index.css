@@ -1,0 +1,49 @@
+body {
+    background-color: #000000;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    padding: 5px;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #444;
+}
+
+ul {
+    top: 0;
+    display: flex;
+    margin: 0;
+    justify-content: center;
+    list-style-type: none; /* Remove os marcadores das listas */
+}
+
+li {
+    background: #fff;
+    padding: 10px 15px; /* Adiciona espaçamento interno */
+    margin: 10px 10px;
+    border-radius: 5px; /* Borda arredondada */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Sombra leve nos itens */
+}
+
+li a {
+
+    color: #e40406;
+    text-decoration: none; 
+    font-weight: bold; /* Deixa o link em negrito */
+}
+
+li a:hover {
+    color: #d35400; /* Cor ao passar o mouse no link */
+}
+
+
+#Conteudo{
+    position: absolute;
+    top: 10%;
+    height: 90%;
+    width: 100%;
+    left:0;
+
+}

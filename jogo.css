@@ -1,0 +1,87 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #222;
+
+    background-image: url('back.jpg');
+    background-size: cover; /* Faz a imagem cobrir toda a tela */
+    background-position: center; /* Centraliza a imagem */
+    background-attachment: fixed; /* Faz com que a imagem não se mova quando a página for rolada */
+}
+
+
+/* Estilo do tabuleiro */
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    grid-gap: 4px;
+
+}
+
+/* Estilo dos botões */
+.container button {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    background: rgba(0, 0, 0, 0.811); /* Cor de fundo inicial */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background 0.3s ease-in-out;
+}
+
+.container button.x {
+    background-image: url('p1.jfif');
+    background-size: cover; /* A imagem vai cobrir toda a div */
+    background-position: center; /* A imagem será centralizada */
+    background-repeat: no-repeat; /* Impede a repetição da imagem */
+
+
+}
+
+.container button.y {
+    background-image: url('p2.jfif');
+    background-size: cover; /* A imagem vai cobrir toda a div */
+    background-position: center; /* A imagem será centralizada */
+    background-repeat: no-repeat; /* Impede a repetição da imagem */
+
+}
+
+/* Estilos extras, não mudam visualmente o jogo, apenas a interação */
+.container button::before {
+    content: '';
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    transform: translate(-50%, -50%);
+    background: radial-gradient(var(--clr), transparent, transparent);
+    width: 300px;
+    height: 300px;
+    transition: 0.5s, top 0.1s, left 0.1s;
+}
+
+.container button::after {
+
+}
+
+#reiniciar{
+    position: absolute;
+    right: 5%;
+    bottom: 3%;
+    padding:2%;
+    border-radius: 150px;
+    background-color: black;
+    color: white;
+}
+
+#titulo{
+    position: absolute;
+    top: 5%;
+    text-align: center;
+}

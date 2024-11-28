@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>Jogo da Velha</title>
+    <link rel="stylesheet" href="jogo.css">
+</head>
+
+<body>
+    <button id="reiniciar">Reiniciar Jogo</button>
+
+    <h1 id="titulo">Jogador X Jogador
+
+    </h1>
+
+    <div class="container">
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+    </div>
+
+    <script>
+        let currentPlayer = 'X'; // Define o primeiro jogador
+        let gameOver = false;
+
+        // Seleciona todos os botões
+        const buttons = document.querySelectorAll('button');
+
+        const winConditions = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7]
+        ];
+
+        // Adiciona um evento de clique para cada botão
+        buttons.forEach((button, index) => {
+            button.addEventListener('click', function () {
+                                           X
+                if (gameOver) {
+                    alert("O jogo acabou!");
+                    return;
+                }
+
+                makeMove(index);
+            });
+
+        });
+
+
+        function makeMove(index) {
+            let button = buttons[index]; // Seleciona o botão clicado
+
+            // Verifica se o botão já foi preenchido
+            if (button.classList.contains('x') || button.classList.contains('y')) {
+                console.log(`Célula ${index} já preenchida!`);
+                return;
+            }
+
+            // Marca o botão com a classe do jogador atual
+            if (currentPlayer === 'X') {
+                button.classList.add('x');
+
+            } else {
+                button.classList.add('y');
+            }
+            if (checkWin()) {
+                console.log(`Jogador ${currentPlayer} ganhou!`);
+                gameOver = true; // Fim do jogo
+                alert(`Jogador ${currentPlayer} ganhou!`);
+                return;
+            }
+
+            if (checkEmpate()) {
+                console.log("Empate!");
+                gameOver = true; // Fim do jogo
+                alert("Empate!");
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'Y' : 'X';
+        }
+
+        function checkEmpate() {
+            // Verifica se todos os botões têm as classes 'x' ou 'y'
+            const allFilled = [...buttons].every(button => button.classList.contains('x') || button.classList.contains('y'));
+            
+            // Se todos os campos estão preenchidos e ninguém ganhou (não há vencedor), então é empate
+            return allFilled && !checkVencedor();  // checkVencedor() seria a função que verifica se há um vencedor
+        }
+        function checkWin() {
+            for (let condition of winConditions) {
+                const [a, b, c] = condition;
+                if (
+                    buttons[a].classList.contains(currentPlayer.toLowerCase()) &&
+                    buttons[b].classList.contains(currentPlayer.toLowerCase()) &&
+                    buttons[c].classList.contains(currentPlayer.toLowerCase())
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function restartGame() {
+
+            buttons.forEach(button => {
+                button.classList.remove('x', 'y');
+            });
+
+
+            gameOver = false; 
+            currentPlayer = 'X';
+        }
+
+
+        document.getElementById('reiniciar').addEventListener('click', restartGame);
+
+
+
+    </script>
+</body>
+
+</html>

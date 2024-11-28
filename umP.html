@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>Jogo da Velha - Jogador vs IA</title>
+    <link rel="stylesheet" href="jogo.css">
+</head>
+
+<body>
+    <button id="reiniciar">Reiniciar Jogo</button>
+
+    <h1 id="titulo">Jogador X CPU</h1>
+
+    <div class="container">
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+    </div>
+
+    <script>
+        let currentPlayer = 'X'; // Define o primeiro jogador
+        let gameOver = false;
+
+        // Seleciona todos os botões
+        const buttons = document.querySelectorAll('button');
+
+        const winConditions = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7]
+        ];
+
+        // Adiciona um evento de clique para cada botão
+        buttons.forEach((button, index) => {
+            button.addEventListener('click', function () {
+                if (gameOver) {
+                    alert("O jogo acabou!");
+                    return;
+                }
+
+                if (currentPlayer === 'X') {
+                    makeMove(index); // Jogador faz o movimento
+                    printDetalhesDaJogada(index); // Imprime o índice da célula e o quadrante no console
+                    if (!gameOver) {
+                        // Apenas chama a IA para jogar se o jogo ainda não acabou
+                        setTimeout(iaMove, 500); // Atraso para o movimento da IA
+                    }
+                }
+            });
+        });
+
+        function makeMove(index) {
+            let button = buttons[index]; // Seleciona o botão clicado
+
+            // Verifica se o botão já foi preenchido
+            if (button.classList.contains('x') || button.classList.contains('y')) {
+                console.log(`Célula ${index} já preenchida!`);
+                return;
+            }
+
+            // Marca o botão com a classe do jogador atual
+            if (currentPlayer === 'X') {
+                button.classList.add('x');
+            } else {
+                button.classList.add('y');
+            }
+
+            if (checkWin()) {
+                console.log(`Jogador ${currentPlayer} ganhou!`);
+                gameOver = true; // Fim do jogo
+                alert(`Jogador ${currentPlayer} ganhou!`);
+                return;
+            }
+
+            if (checkEmpate()) {
+                console.log("Empate!");
+                gameOver = true; // Fim do jogo
+                alert("Empate!");
+                return;
+            }
+
+            // Troca para o próximo jogador
+            currentPlayer = currentPlayer === 'X' ? 'Y' : 'X';
+        }
+
+        function checkWin() {
+            for (let condition of winConditions) {
+                const [a, b, c] = condition;
+
+                // Verifica se as 3 casas possuem a classe correspondente ao jogador atual
+                if (
+                    buttons[a].classList.contains(currentPlayer.toLowerCase()) &&
+                    buttons[b].classList.contains(currentPlayer.toLowerCase()) &&
+                    buttons[c].classList.contains(currentPlayer.toLowerCase())
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function checkEmpate() {
+            return [...buttons].every(button => button.classList.contains('x') || button.classList.contains('y'));
+        }
+
+        // Função para o movimento da IA
+        function iaMove() {
+            if (gameOver) return; // A IA não faz movimento se o jogo já acabou
+
+            let availableMoves = [];
+            buttons.forEach((button, index) => {
+                if (!button.classList.contains('x') && !button.classList.contains('y')) {
+                    availableMoves.push(index);
+                }
+            });
+
+            if (availableMoves.length === 0) {
+                return; // Não há movimentos disponíveis (empate ou jogo terminado)
+            }
+
+            // A IA escolhe um movimento aleatório
+            let randomMove;
+            do {
+                randomMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+            } while (buttons[randomMove].classList.contains('x') || buttons[randomMove].classList.contains('y'));
+
+
+            // Faz o movimento da IA
+            buttons[randomMove].classList.add('y');
+            console.log(`A IA escolheu a célula ${randomMove}`);
+
+            if (checkWin()) {
+                console.log("A IA ganhou!");
+                gameOver = true;
+                alert("A IA ganhou!");
+                return;
+            }
+
+            if (checkEmpate()) {
+                console.log("Empate!");
+                gameOver = true;
+                alert("Empate!");
+                return;
+            }
+
+            // Troca para o jogador humano após o movimento da IA
+            currentPlayer = 'X';
+        }
+
+        function restartGame() {
+            buttons.forEach(button => {
+                button.classList.remove('x', 'y');
+            });
+
+            gameOver = false;
+            currentPlayer = 'X'; // Jogador começa
+        }
+
+        document.getElementById('reiniciar').addEventListener('click', restartGame);
+
+        // Função para identificar o quadrante e célula baseado no índice
+        function printDetalhesDaJogada(index) {
+            let quadrante = '';
+            
+            // Atribui o quadrante com base no índice do botão
+            if (index >= 0 && index <= 2) {
+                quadrante = 'Quadrante 1';  // Primeira linha: índices 0, 1, 2
+            } else if (index >= 3 && index <= 5) {
+                quadrante = 'Quadrante 2';  // Segunda linha: índices 3, 4, 5
+            } else if (index >= 6 && index <= 8) {
+                quadrante = 'Quadrante 3';  // Terceira linha: índices 6, 7, 8
+            }
+
+            // Exibe a célula (índice) e o quadrante no console
+            console.log(`Jogador ${currentPlayer} clicou na célula ${index} (no ${quadrante})`);
+        }
+
+    </script>
+</body>
+
+</html>
